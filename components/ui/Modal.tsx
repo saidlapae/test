@@ -15,27 +15,32 @@ export default function Modal({
   useEffect(() => {
     if (open) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "";
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [open]);
   if (!open) return null;
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4 backdrop-blur-md animate-fade-in"
       onClick={onClose}
     >
       <div
-        className="bg-primary-light border border-neutral-800 rounded-md w-full max-w-lg p-6"
+        className="relative w-full max-w-lg overflow-hidden rounded-xl border border-border bg-surface shadow-premium animate-scale-in"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg text-neutral-100">{title}</h3>
+        <div className="gradient-accent h-1 w-full" />
+        <div className="flex items-center justify-between border-b border-border px-6 py-4">
+          <h3 className="text-lg font-semibold font-display text-ink">{title}</h3>
           <button
             onClick={onClose}
-            className="text-neutral-400 hover:text-neutral-200"
+            aria-label="Tutup"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-muted transition-colors hover:bg-subtle hover:text-ink"
           >
-            <X className="w-5 h-5" />
+            <X className="h-5 w-5" />
           </button>
         </div>
-        {children}
+        <div className="p-6">{children}</div>
       </div>
     </div>
   );

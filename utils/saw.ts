@@ -22,17 +22,24 @@ export function calculateSAW(
 ): Result[] {
   const maxMin: Record<string, number> = {};
   criteria.forEach((c) => {
-    const vals = alternatives.map((a) => a.values[c.id] || 0);
+    const vals = alternatives.map((a) => Number(a.values[c.id]) || 0);
     maxMin[c.id] = c.type === "benefit" ? Math.max(...vals) : Math.min(...vals);
   });
 
   const results: Result[] = alternatives.map((alt) => {
     let score = 0;
     criteria.forEach((c) => {
-      const val = alt.values[c.id] || 0;
+      const val = Number(alt.values[c.id]) || 0;
+      // Guard against divide-by-zero so scores never become NaN/Infinity.
       const norm =
-        c.type === "benefit" ? val / maxMin[c.id] : maxMin[c.id] / val;
-      score += c.weight * norm;
+        c.type === "benefit"
+          ? maxMin[c.id] > 0
+            ? val / maxMin[c.id]
+            : 0
+          : val > 0
+            ? maxMin[c.id] / val
+            : 0;
+      score += Number(c.weight) * norm;
     });
     return { alternative: alt, score: parseFloat(score.toFixed(4)), rank: 0 };
   });

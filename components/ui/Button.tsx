@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, ReactNode } from "react";
+import { ButtonHTMLAttributes } from "react";
 export default function Button({
   children,
   variant = "primary",
@@ -8,13 +8,16 @@ export default function Button({
   variant?: "primary" | "secondary" | "danger";
 }) {
   const styles = {
-    primary: "bg-accent hover:bg-accent-dark text-white",
-    secondary: "bg-neutral-800 hover:bg-neutral-700 text-neutral-200",
-    danger: "bg-red-600 hover:bg-red-700 text-white",
+    primary:
+      "gradient-accent text-white shadow-glow-accent hover:brightness-105 hover:-translate-y-0.5 active:translate-y-0",
+    secondary:
+      "bg-white text-ink-soft border border-border hover:bg-subtle hover:border-primary/30 hover:-translate-y-0.5 active:translate-y-0",
+    danger:
+      "bg-error text-white hover:bg-error/90 hover:-translate-y-0.5 active:translate-y-0",
   };
   return (
     <button
-      className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${styles[variant]} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-50 ${styles[variant]} ${className}`}
       {...props}
     >
       {children}
